@@ -1,24 +1,46 @@
 ## D3 FPS (Frames Per Second) Analysis
 
-**SCM Repo:** https://github.com/rhocevar/d3fps
+A command-line tool that processes FPS performance log files for a given real-time game simulation and reports statistical summaries (min/max or average FPS) for a given game Act.
 
-**Goal:** process a directory of "FPS performance log" files which are collections of performance samples and metadata represented as JSON objects.
+### Prerequisites
 
-**Requirements**:
-- It should accept the following arguments: "act", "calc_type", "data_dir"
-- It should process JSON files from the supplied "data_dir"
-- It should be able to calculate and report back the minimum/maximum FPS values or the computed average FPS for the desired Act
+- Python 3.9.6+
 
-**Notes**:
+No external dependencies are required — the tool uses only the Python standard library (`sys`, `os`, `json`).
 
-Please cite any references you used in making this tool
-- https://www.jenkins.io/doc/tutorials/#pipeline
+### Usage
 
-Please specify the type of pipeline script created
-- The Jenkins pipeline job was configured using 'pipeline script from SCM'.
-- The SCM repo is available at https://github.com/rhocevar/d3fps.
+```
+python d3fps.py <ACT> <CALC_TYPE> <DATA_DIR>
+```
 
-Provide a list of tools/programs/libraries/frameworks used in it's creation
-- The python script was implemented and tested using PyCharm IDE.
-- Jenkins version 2.504.3
-- Python version 3.9.6
+| Argument    | Description                                          |
+|-------------|------------------------------------------------------|
+| `ACT`       | Game act to analyze: `A1`, `A2`, `A3`, or `A4`      |
+| `CALC_TYPE` | Calculation type: `minmax` or `avg`                  |
+| `DATA_DIR`  | Path to a directory containing JSON performance logs |
+
+**Examples:**
+
+```
+python d3fps.py A1 minmax ./FPSLogs   # Min FPS: 37.84, Max FPS: 61.96
+python d3fps.py A2 avg ./FPSLogs      # Average FPS: 58.235...
+```
+
+### Data Format
+
+Each JSON log file contains a `collections` array. Each collection includes metadata (`act`, `world`, `scene`, etc.) and a `samples` array of performance measurements. Each sample records `fps`, timestamp, rendering batch/triangle counts, particle metrics, and CPU/GPU bound indicators.
+
+### Jenkins Integration
+
+The project includes a `Jenkinsfile` that defines a parameterized pipeline with dropdown selections for `ACT` and `CALC_TYPE`, and a configurable `LOGS_DIR` (defaults to `./FPSLogs`). The pipeline is configured as **Pipeline script from SCM**.
+
+### Tools Used
+
+- Python 3.9.6
+- PyCharm IDE
+- Jenkins 2.504.3
+
+### References
+
+- [Jenkins Pipeline Tutorials](https://www.jenkins.io/doc/tutorials/#pipeline)
