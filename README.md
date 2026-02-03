@@ -1,4 +1,4 @@
-## D3 FPS (Frames Per Second) Analysis
+## FPS (Frames Per Second) Analyzer
 
 A command-line tool that processes FPS performance log files for a given real-time game simulation and reports statistical summaries (min/max or average FPS) for a given game Act.
 
